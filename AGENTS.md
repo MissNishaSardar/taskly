@@ -56,7 +56,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## shadcn / Base UI
 
 - `components.json`: `ui` → `@/components/shadcnui`. `bunx shadcn add` places files there.
-- Installed components: `button`, `card`, `checkbox`, `field`, `input`, `label`, `separator`
+- Installed components: `alert-dialog`, `avatar`, `breadcrumb`, `button`, `calendar`, `card`, `checkbox`, `collapsible`, `dropdown-menu`, `field`, `input`, `label`, `popover`, `select`, `separator`, `sheet`, `sidebar`, `skeleton`, `tooltip`
 - Primitives from `@base-ui/react`, not Radix or react-aria.
 
 ## Authentication (Better Auth)
@@ -65,14 +65,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Server: `src/lib/auth.ts` — `betterAuth()` with `prismaAdapter` + `emailAndPassword: { enabled: true }`. Reads `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL` from env.
 - Client: `src/lib/auth-client.ts` — `createAuthClient()` from `better-auth/react`
 - `better-auth` session cookie uses `rememberMe` flag for persistent vs session-only `maxAge`
+- `UserNav` (`src/components/UserNav.tsx`) — client component using `authClient.useSession()`. Avatar with initials dropdown containing user name/email and sign out. Rendered in the private layout header.
 
 ## Public pages (route group `(public)`)
 
-| Route        | Component             | File                                                                        |
-| ------------ | --------------------- | --------------------------------------------------------------------------- |
-| `/`          | Sign-in (Card layout) | `src/app/(public)/page.tsx` + `src/components/SignInForm.tsx`               |
-| `/register`  | Sign-up (Card layout) | `src/app/(public)/register/page.tsx` + `src/components/SignUpForm.tsx`      |
-| `/dashboard` | Mock dashboard        | `src/app/(private)/dashboard/page.tsx` + `src/components/SignOutButton.tsx` |
+| Route        | Component             | File                                                                   |
+| ------------ | --------------------- | ---------------------------------------------------------------------- |
+| `/`          | Sign-in (Card layout) | `src/app/(public)/page.tsx` + `src/components/SignInForm.tsx`          |
+| `/register`  | Sign-up (Card layout) | `src/app/(public)/register/page.tsx` + `src/components/SignUpForm.tsx` |
+| `/dashboard` | Mock dashboard        | `src/app/(private)/dashboard/page.tsx`                                 |
+| `/dashboard` | Mock dashboard header | `src/components/UserNav.tsx` — in `(private)/layout.tsx`, right side   |
 
 ## Form patterns
 
@@ -91,6 +93,11 @@ const { handleSubmit, control, formState: { isSubmitting } } = useForm({
 Each field goes through `Controller` with `Field`, `FieldLabel`, `FieldError`, `Input`. Submit via `<form onSubmit={handleSubmit(handler)} noValidate>`. Button disabled while submitting with icon toggle.
 
 See existing examples: `src/components/SignInForm.tsx`, `src/components/SignUpForm.tsx`.
+
+## Code conventions
+
+- **Component style:** arrow functions (`const Foo = () => { ... }`) with PascalCase names. Exception: `src/components/shadcnui/` uses `function` keyword (shadcn convention, keep as-generated).
+- **File names:** PascalCase for component files (e.g. `SignInForm.tsx`), kebab-case for utilities.
 
 ## Styling conventions
 

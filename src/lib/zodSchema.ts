@@ -23,3 +23,36 @@ export const signUpSchema = z
   });
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;
+
+export const TASK_STATUSES = ["todo", "in_progress", "done"] as const;
+export const TASK_PRIORITIES = ["low", "medium", "high"] as const;
+
+export const createTaskSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  priority: z.enum(TASK_PRIORITIES),
+  dueDate: z.string().optional(),
+});
+
+export type CreateTaskSchema = z.infer<typeof createTaskSchema>;
+
+export const updateTaskSchema = z.object({
+  title: z.string().min(1, "Title is required").optional(),
+  description: z.string().optional(),
+  status: z.enum(TASK_STATUSES).optional(),
+  priority: z.enum(TASK_PRIORITIES).optional(),
+  dueDate: z.string().optional(),
+});
+
+export type UpdateTaskSchema = z.infer<typeof updateTaskSchema>;
+
+export type TaskData = {
+  id: string;
+  title: string;
+  description: string | null;
+  status: (typeof TASK_STATUSES)[number];
+  priority: (typeof TASK_PRIORITIES)[number];
+  dueDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
