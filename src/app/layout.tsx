@@ -1,4 +1,5 @@
 import ThemeProvider from "@/components/Providers/ThemeProvider";
+import { TooltipProvider } from "@/components/shadcnui/tooltip";
 import { notoSansHeading, nunitoSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
@@ -24,7 +25,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           attribute={"class"}
           defaultTheme="dark"
           enableSystem={false}>
-          <main className="">{children}</main>
+          <TooltipProvider>
+            <main className="">{children}</main>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

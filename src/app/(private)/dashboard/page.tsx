@@ -1,4 +1,3 @@
-import { SignOutButton } from "@/components/SignOutButton";
 import {
   Card,
   CardContent,
@@ -20,7 +19,7 @@ const stats = [
 ];
 
 const DashboardPage = () => (
-  <div className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-8 p-6">
+  <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 py-6">
     <header className="flex items-center justify-between">
       <div>
         <h1 className="text-2xl font-medium">Dashboard</h1>
@@ -28,7 +27,6 @@ const DashboardPage = () => (
           Welcome back! Here&apos;s your overview.
         </p>
       </div>
-      <SignOutButton />
     </header>
 
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
