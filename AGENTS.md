@@ -19,15 +19,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Commands
 
-| Command         | What it does                                               |
-| --------------- | ---------------------------------------------------------- |
-| `bun dev`       | next dev (Turbopack)                                       |
-| `bun build`     | `prisma generate && next build`                            |
-| `bun lint`      | eslint (`eslint-config-next` core-web-vitals + typescript) |
-| `bun typecheck` | `next typegen && tsc --noEmit` (run before commit)         |
-| `bun prod`      | full build + start (schema/env changes)                    |
-| `bun migrate`   | `prisma migrate dev && prisma generate` (schema edits)     |
-| `bun studio`    | Prisma Studio (headless, `--browser none`)                 |
+| Command         | What it does                                                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bun dev`       | next dev (Turbopack)                                                                                                                        |
+| `bun build`     | `prisma generate && next build`                                                                                                             |
+| `bun lint`      | eslint (`eslint-config-next` core-web-vitals + typescript)                                                                                  |
+| `bun typecheck` | `next typegen && tsc --noEmit` (run before commit). New routes cause `Link` `href` type errors until typegen regenerates — run this to fix. |
+| `bun prod`      | full build + start (schema/env changes)                                                                                                     |
+| `bun migrate`   | `prisma migrate dev && prisma generate` (schema edits)                                                                                      |
+| `bun studio`    | Prisma Studio (headless, `--browser none`)                                                                                                  |
 
 ## Env validation
 
@@ -62,23 +62,26 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Authentication (Better Auth)
 
 - API route: `src/app/api/auth/[...all]/route.ts` — `toNextJsHandler(auth.handler)` (GET + POST)
-- Server: `src/lib/auth.ts` — `betterAuth()` with `prismaAdapter` + `emailAndPassword: { enabled: true }`. Reads `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL` from env.
+- Server: `src/lib/auth.ts` — `betterAuth()` with `prismaAdapter` + `emailAndPassword` (`enabled`, `sendResetPassword`), `emailVerification` (`sendOnSignUp`, `sendVerificationEmail`), `rateLimit` (5/60s on sign-in/sign-up). Reads `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL` from env.
 - Client: `src/lib/auth-client.ts` — `createAuthClient()` from `better-auth/react`
 - `better-auth` session cookie uses `rememberMe` flag for persistent vs session-only `maxAge`
+- Emails (verification, password reset) use `src/lib/email.ts` — console logger in dev. Swap for Resend/SendGrid.
 - `UserNav` (`src/components/UserNav.tsx`) — client component using `authClient.useSession()`. Avatar with initials dropdown containing user name/email and sign out. Rendered in the private layout header.
 
 ## Public pages (route group `(public)`)
 
-| Route        | Component             | File                                                                   |
-| ------------ | --------------------- | ---------------------------------------------------------------------- |
-| `/`          | Sign-in (Card layout) | `src/app/(public)/page.tsx` + `src/components/SignInForm.tsx`          |
-| `/register`  | Sign-up (Card layout) | `src/app/(public)/register/page.tsx` + `src/components/SignUpForm.tsx` |
-| `/dashboard` | Mock dashboard        | `src/app/(private)/dashboard/page.tsx`                                 |
-| `/dashboard` | Mock dashboard header | `src/components/UserNav.tsx` — in `(private)/layout.tsx`, right side   |
+| Route              | Component              | File                                                                                  |
+| ------------------ | ---------------------- | ------------------------------------------------------------------------------------- |
+| `/`                | Sign-in (Card layout)  | `src/app/(public)/page.tsx` + `src/components/SignInForm.tsx`                         |
+| `/register`        | Sign-up (Card layout)  | `src/app/(public)/register/page.tsx` + `src/components/SignUpForm.tsx`                |
+| `/forgot-password` | Forgot password (Card) | `src/app/(public)/forgot-password/page.tsx` + `src/components/ForgotPasswordForm.tsx` |
+| `/reset-password`  | Reset password (Card)  | `src/app/(public)/reset-password/page.tsx` + `src/components/ResetPasswordForm.tsx`   |
+| `/dashboard`       | Mock dashboard         | `src/app/(private)/dashboard/page.tsx`                                                |
+| `/dashboard`       | Mock dashboard header  | `src/components/UserNav.tsx` — in `(private)/layout.tsx`, right side                  |
 
 ## Form patterns
 
-Schemas in `src/lib/zodSchema.ts` — export both schema and `type X = z.infer<typeof xSchema>`.
+Schemas in `src/lib/zodSchema.ts` — export schema as `xSchema` and type as `XType` (e.g. `signInSchema` + `SignInType`).
 
 Components use `"use client"`, `react-hook-form` + `@hookform/resolvers/zod`, shadcn primitives, `Controller`, and `zod` for validation:
 

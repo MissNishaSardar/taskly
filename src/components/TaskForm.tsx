@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createTaskSchema,
   TASK_PRIORITIES,
-  type CreateTaskSchema,
+  type CreateTaskType,
 } from "@/lib/zodSchema";
 import { createTask, updateTask } from "@/server/taskActions";
 import { useRouter } from "next/navigation";
@@ -35,19 +35,19 @@ const TaskForm = ({ task }: TaskFormProps) => {
     handleSubmit,
     control,
     formState: { isSubmitting, isValid },
-  } = useForm<CreateTaskSchema>({
+  } = useForm<CreateTaskType>({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
       title: task?.title ?? "",
       description: task?.description ?? "",
-      priority: (task?.priority as CreateTaskSchema["priority"]) ?? "medium",
+      priority: (task?.priority as CreateTaskType["priority"]) ?? "medium",
       dueDate:
         task?.dueDate ? new Date(task.dueDate).toISOString().slice(0, 16) : "",
     },
     mode: "all",
   });
 
-  const onSubmit = async (data: CreateTaskSchema) => {
+  const onSubmit = async (data: CreateTaskType) => {
     try {
       if (isEdit && task) {
         await updateTask(task.id, data);

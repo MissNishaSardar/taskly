@@ -5,8 +5,8 @@ import prisma from "@/lib/database/dbClient";
 import {
   createTaskSchema,
   updateTaskSchema,
-  type CreateTaskSchema,
-  type UpdateTaskSchema,
+  type CreateTaskType,
+  type UpdateTaskType,
   type TaskData,
 } from "@/lib/zodSchema";
 import { headers } from "next/headers";
@@ -39,7 +39,7 @@ export const getTaskById = async (id: string): Promise<TaskData | null> => {
   return task as unknown as TaskData | null;
 };
 
-export const createTask = async (data: CreateTaskSchema): Promise<TaskData> => {
+export const createTask = async (data: CreateTaskType): Promise<TaskData> => {
   const session = await getSession();
 
   const parsed = createTaskSchema.parse(data);
@@ -62,7 +62,7 @@ export const createTask = async (data: CreateTaskSchema): Promise<TaskData> => {
 
 export const updateTask = async (
   id: string,
-  data: UpdateTaskSchema,
+  data: UpdateTaskType,
 ): Promise<TaskData> => {
   const session = await getSession();
 

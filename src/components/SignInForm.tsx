@@ -1,9 +1,10 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { signInSchema, type SignInSchema } from "@/lib/zodSchema";
+import { signInSchema, type SignInType } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, LockIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -20,13 +21,13 @@ const SignInForm = () => {
     control,
     formState: { isSubmitting, isValid },
     reset,
-  } = useForm<SignInSchema>({
+  } = useForm<SignInType>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: "", password: "", rememberMe: false },
     mode: "all",
   });
 
-  const onSubmit = async ({ email, password, rememberMe }: SignInSchema) => {
+  const onSubmit = async ({ email, password, rememberMe }: SignInType) => {
     try {
       const { error } = await authClient.signIn.email({
         email,
@@ -105,19 +106,27 @@ const SignInForm = () => {
         )}
       />
 
-      <Button
-        className="w-full"
-        type="submit"
-        disabled={isSubmitting || !isValid}>
-        {isSubmitting ?
-          <>
-            <Loader2Icon className="animate-spin" /> Signing in...
-          </>
-        : <>
-            <LockIcon /> Sign in
-          </>
-        }
-      </Button>
+      <div className="flex flex-col items-end gap-2">
+        <Link
+          href="/forgot-password"
+          className="text-muted-foreground hover:text-foreground text-sm underline underline-offset-4">
+          Forgot password?
+        </Link>
+
+        <Button
+          className="w-full"
+          type="submit"
+          disabled={isSubmitting || !isValid}>
+          {isSubmitting ?
+            <>
+              <Loader2Icon className="animate-spin" /> Signing in...
+            </>
+          : <>
+              <LockIcon /> Sign in
+            </>
+          }
+        </Button>
+      </div>
     </form>
   );
 };

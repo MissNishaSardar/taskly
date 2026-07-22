@@ -6,7 +6,7 @@ export const signInSchema = z.object({
   rememberMe: z.boolean(),
 });
 
-export type SignInSchema = z.infer<typeof signInSchema>;
+export type SignInType = z.infer<typeof signInSchema>;
 
 export const signUpSchema = z
   .object({
@@ -22,7 +22,7 @@ export const signUpSchema = z
     path: ["confirmPassword"],
   });
 
-export type SignUpSchema = z.infer<typeof signUpSchema>;
+export type SignUpType = z.infer<typeof signUpSchema>;
 
 export const TASK_STATUSES = ["todo", "in_progress", "done"] as const;
 export const TASK_PRIORITIES = ["low", "medium", "high"] as const;
@@ -34,7 +34,7 @@ export const createTaskSchema = z.object({
   dueDate: z.string().optional(),
 });
 
-export type CreateTaskSchema = z.infer<typeof createTaskSchema>;
+export type CreateTaskType = z.infer<typeof createTaskSchema>;
 
 export const updateTaskSchema = z.object({
   title: z.string().min(1, "Title is required").optional(),
@@ -44,7 +44,27 @@ export const updateTaskSchema = z.object({
   dueDate: z.string().optional(),
 });
 
-export type UpdateTaskSchema = z.infer<typeof updateTaskSchema>;
+export type UpdateTaskType = z.infer<typeof updateTaskSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+export type ForgotPasswordType = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordType = z.infer<typeof resetPasswordSchema>;
 
 export type TaskData = {
   id: string;

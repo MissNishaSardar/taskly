@@ -15,29 +15,27 @@ export const metadata: Metadata = {
 };
 
 const SignInPage = () => (
-  <section className="flex min-h-dvh items-center justify-center px-4">
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Welcome back</CardTitle>
-        <CardDescription>
-          Sign in to your Taskly account to continue.
-        </CardDescription>
-      </CardHeader>
+  <Card className="w-full max-w-sm">
+    <CardHeader>
+      <CardTitle>Welcome back</CardTitle>
+      <CardDescription>
+        Sign in to your Taskly account to continue.
+      </CardDescription>
+    </CardHeader>
 
-      <CardContent>
-        <SignInForm />
-      </CardContent>
+    <CardContent>
+      <SignInForm />
+    </CardContent>
 
-      <div className="text-muted-foreground border-t px-4 py-4 text-center text-sm">
-        {"No account yet? "}
-        <Link
-          href="/register"
-          className="text-foreground hover:text-primary font-medium underline underline-offset-4">
-          Sign up
-        </Link>
-      </div>
-    </Card>
-  </section>
+    <div className="text-muted-foreground border-t px-4 py-4 text-center text-sm">
+      {"No account yet? "}
+      <Link
+        href="/register"
+        className="text-foreground hover:text-primary font-medium underline underline-offset-4">
+        Sign up
+      </Link>
+    </div>
+  </Card>
 );
 
 export default SignInPage;

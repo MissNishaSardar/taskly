@@ -1,4 +1,4 @@
-import { SignUpForm } from "@/components/SignUpForm";
+import { ResetPasswordForm } from "@/components/ResetPasswordForm";
 import {
   Card,
   CardContent,
@@ -8,32 +8,34 @@ import {
 } from "@/components/shadcnui/card";
 import { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Create account",
-  description: "Create your Taskly account to get started.",
+  title: "Reset password",
+  description: "Set a new password for your Taskly account.",
 };
 
-const SignUpPage = () => (
+const ResetPasswordPage = () => (
   <Card className="w-full max-w-sm">
     <CardHeader>
-      <CardTitle>Create account</CardTitle>
-      <CardDescription>Enter your details to get started.</CardDescription>
+      <CardTitle>Set new password</CardTitle>
+      <CardDescription>Enter your new password below.</CardDescription>
     </CardHeader>
 
     <CardContent>
-      <SignUpForm />
+      <Suspense>
+        <ResetPasswordForm />
+      </Suspense>
     </CardContent>
 
     <div className="text-muted-foreground border-t px-4 py-4 text-center text-sm">
-      {"Already have an account? "}
       <Link
         href="/"
         className="text-foreground hover:text-primary font-medium underline underline-offset-4">
-        Sign in
+        Back to sign in
       </Link>
     </div>
   </Card>
 );
 
-export default SignUpPage;
+export default ResetPasswordPage;

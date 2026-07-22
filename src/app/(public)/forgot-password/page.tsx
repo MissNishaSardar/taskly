@@ -1,4 +1,4 @@
-import { SignUpForm } from "@/components/SignUpForm";
+import { ForgotPasswordForm } from "@/components/ForgotPasswordForm";
 import {
   Card,
   CardContent,
@@ -10,30 +10,31 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Create account",
-  description: "Create your Taskly account to get started.",
+  title: "Forgot password",
+  description: "Reset your Taskly password.",
 };
 
-const SignUpPage = () => (
+const ForgotPasswordPage = () => (
   <Card className="w-full max-w-sm">
     <CardHeader>
-      <CardTitle>Create account</CardTitle>
-      <CardDescription>Enter your details to get started.</CardDescription>
+      <CardTitle>Forgot password?</CardTitle>
+      <CardDescription>
+        Enter your email and we'll send you a reset link.
+      </CardDescription>
     </CardHeader>
 
     <CardContent>
-      <SignUpForm />
+      <ForgotPasswordForm />
     </CardContent>
 
     <div className="text-muted-foreground border-t px-4 py-4 text-center text-sm">
-      {"Already have an account? "}
       <Link
         href="/"
         className="text-foreground hover:text-primary font-medium underline underline-offset-4">
-        Sign in
+        Back to sign in
       </Link>
     </div>
   </Card>
 );
 
-export default SignUpPage;
+export default ForgotPasswordPage;

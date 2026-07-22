@@ -1,7 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { signUpSchema, type SignUpSchema } from "@/lib/zodSchema";
+import { signUpSchema, type SignUpType } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -19,13 +19,13 @@ const SignUpForm = () => {
     control,
     formState: { isSubmitting, isValid },
     reset,
-  } = useForm<SignUpSchema>({
+  } = useForm<SignUpType>({
     resolver: zodResolver(signUpSchema),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
     mode: "all",
   });
 
-  const onSubmit = async (data: SignUpSchema) => {
+  const onSubmit = async (data: SignUpType) => {
     try {
       const { error } = await authClient.signUp.email({
         name: data.name,
