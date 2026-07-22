@@ -19,6 +19,10 @@ const navItems = [
     title: "Tasks",
     url: "/tasks",
     icon: <ListTodoIcon />,
+    items: [
+      { title: "All Tasks", url: "/tasks" },
+      { title: "New Task", url: "/tasks/new" },
+    ],
   },
 ];
 

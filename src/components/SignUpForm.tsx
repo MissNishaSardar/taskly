@@ -42,7 +42,7 @@ const SignUpForm = () => {
       } else {
         toast.success("Account created successfully!");
         reset();
-        replace("/");
+        replace("/dashboard");
       }
     } catch {
       toast.error("Registration failed. Please try again.");
